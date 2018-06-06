@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { View, Text } from 'react-native';
 import { Provider } from 'react-redux';
-import { createStore } from 'redux';
+import { createStore, applyMiddleware } from 'redux';
 import firebase from 'firebase';
+import ReduxThunk from 'redux-thunk';
 import reducers from './reducers';
 import LoginForm from './components/LoginForm'
 
@@ -19,10 +19,13 @@ class App extends Component {
         firebase.initializeApp(config);
     }
     render() {
+        // second argument is passing an initial state for redux application
+        // third argument is "store enchancers", for adding functionality to store
+        const store = createStore(reducers, {}, applyMiddleware(ReduxThunk));
         return(
             // provider tag needs an instance of a redux store
             // also need a default reducer 
-            <Provider store={createStore(reducers)}>
+            <Provider store={ store }>
                 <LoginForm />
             </Provider>        
         );
