@@ -26,10 +26,19 @@ export const loginUser = ({ email, password }) => {
     // We provide dispatch to function as parameter, so it's accessible inside "then".
     return (dispatch) => {
         firebase.auth().signInAndRetrieveDataWithEmailAndPassword(email, password)
-            .then(user => {
-                // *Manually* dispatch an action after asynchronous call has finished:
-                dispatch({ type: LOGIN_USER_SUCCESS, payload: user })
+            .then(user => loginUserSuccess(dispatch, user))
+            .catch(() => {
+                firebase.auth().createUserWithEmailAndPassword(email, password)
+                    .then(user => loginUserSuccess(dispatch, user));
             });
-    }
+    };
+};
 
+const loginUserSuccess = (dispatch, user) => {
+    // *Manually* dispatch an action after asynchronous call has finished:
+    dispatch({
+        type: LOGIN_USER_SUCCESS,
+        payload: user
+    });
 }
+
