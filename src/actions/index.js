@@ -26,7 +26,7 @@ export const loginUser = ({ email, password }) => {
     // After asynchronous call has finished, we manually dispatch our action inside "then".
     // We provide dispatch to function as parameter, so it's accessible inside "then".
     return (dispatch) => {
-        firebase.auth().signInAndRetrieveDataWithEmailAndPassword(email, password)
+        firebase.auth().signInWithEmailAndPassword(email, password)
             .then(user => loginUserSuccess(dispatch, user))
             .catch(() => {
                 firebase.auth().createUserWithEmailAndPassword(email, password)
