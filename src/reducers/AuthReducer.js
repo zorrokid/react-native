@@ -29,7 +29,11 @@ export default (state = INITIAL_STATE, action) => {
         case LOGIN_USER:
             return { ...state, loading: true, error: '' };
         case LOGIN_USER_SUCCESS:
-            return { ...state, user: action.payload, error: '', loading: false };
+            // 1) copy all from current state 
+            //    (just in case we add new properties that are not in INITIAL_STATE) 
+            // 2) reset properties from INITIAL_STATE
+            // 3) add user -model
+            return { ...state, ...INITIAL_STATE, user: action.payload };
         case LOGIN_USER_FAIL:
             return { ...state, error: 'Authentication failed.', loading: false }
         default:
